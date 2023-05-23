@@ -30,7 +30,6 @@ public class Ex02 implements Runnable {
 		Ex02 test = new Ex02();
 		new Thread(test, "tiger").start();
 		new Thread(test, "dog").start();
-		
 	}
 
 }
