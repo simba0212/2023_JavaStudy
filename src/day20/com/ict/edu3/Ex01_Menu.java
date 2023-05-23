@@ -3,7 +3,13 @@ package day20.com.ict.edu3;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -15,13 +21,68 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class Ex01_Menu extends JFrame {
+public class Ex01_Menu extends JFrame implements ActionListener {
 	JPanel panelN, panelC1, panelC2, panelC3, panelS, panelC;
 	JButton order, cancel;
 	JRadioButton jrb1, jrb2, jrb3, jrb4, jrb5, jrb6, jrb7, jrb8, jrb9, jrb10;
 	ButtonGroup bg1, bg2, bg3;
 	JTextField jtf;
 	JTable jtb1, jtb2, jtb3;
+	int piz, top, total;
+	double size;
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if (obj == cancel) {
+			jtf.setText("");
+		} else if (obj == order) {
+			cal();
+		}
+
+	}
+
+//	@Override
+//	public void itemStateChanged(ItemEvent e) {
+//		// bg1에 존재하는 요소들을 배열로 만든다.
+//		JRadioButton obj = (JRadioButton) e.getSource();
+//		Enumeration<AbstractButton> list1 = bg1.getElements();
+//		while (list1.hasMoreElements()) {
+//			// bg1에 있는 요소를 꺼내서 라디오버튼으로 형변환해준것 jb
+//			AbstractButton abstractButton = (AbstractButton) list1.nextElement();
+//			JRadioButton jb = (JRadioButton) abstractButton;
+//			
+//		}
+//
+//	}
+
+	private void cal() {
+		if (jrb1.isSelected()) {
+			piz = 15000;
+		} else if (jrb2.isSelected()) {
+			piz = 20000;
+		} else if (jrb3.isSelected()) {
+			piz = 30000;
+		}
+		if (jrb4.isSelected()) {
+			top = 500;
+		} else if (jrb5.isSelected()) {
+			top = 1000;
+		} else if (jrb6.isSelected()) {
+			top = 1500;
+		} else if (jrb7.isSelected()) {
+			top = 2000;
+		}
+		if (jrb8.isSelected()) {
+			size = 0.8;
+		} else if (jrb9.isSelected()) {
+			size = 1.0;
+		} else if (jrb10.isSelected()) {
+			size = 1.2;
+		}
+		total = (int) ((piz + top) * size);
+		jtf.setText(Integer.toString(total) + "원");
+	}
 
 	public Ex01_Menu() {
 		super("피자 주문판");
@@ -79,7 +140,9 @@ public class Ex01_Menu extends JFrame {
 		jtf = new JTextField(10);
 		jtf.setEditable(false);
 		order = new JButton("주문");
+		order.addActionListener(this);
 		cancel = new JButton("취소");
+		cancel.addActionListener(this);
 		panelS.add(order);
 		panelS.add(cancel);
 		panelS.add(jtf);
@@ -105,4 +168,5 @@ public class Ex01_Menu extends JFrame {
 	public static void main(String[] args) {
 		new Ex01_Menu();
 	}
+
 }
