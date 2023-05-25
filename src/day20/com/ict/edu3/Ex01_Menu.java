@@ -168,5 +168,4 @@ public class Ex01_Menu extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new Ex01_Menu();
 	}
-
 }
