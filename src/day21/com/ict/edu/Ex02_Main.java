@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class Ex02_Main extends JFrame {
 	JPanel pg1;
-	CardLayout cardLayout,cardLayout2;
+	CardLayout cardLayout;
 
 	public Ex02_Main() {
 		super("카드레이아웃2");
@@ -15,7 +15,6 @@ public class Ex02_Main extends JFrame {
 		cardLayout = new CardLayout();
 		pg1.setLayout(cardLayout);
 		Ex02_Login login = new Ex02_Login(cardLayout, pg1);
-		Ex02_Login login2 = new Ex02_Login(cardLayout2, pg1);
 		Ex02_Join join = new Ex02_Join(this);
 		Ex02_Login_Ok ok = new Ex02_Login_Ok(this);
 		
