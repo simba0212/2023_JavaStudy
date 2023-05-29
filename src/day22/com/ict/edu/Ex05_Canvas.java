@@ -15,7 +15,14 @@ public class Ex05_Canvas extends Canvas {
 		int g1 = (int) (Math.random() * 256);
 		int b1 = (int) (Math.random() * 256);
 		g.setColor(new Color(r1, g1, b1));
-		g.fillOval(x, y, wh, wh);
+		g.fillOval(x - wh / 2, y - wh / 2, wh, wh);
+
+	}
+	
+	// 기존 내용을 그대로 남겨 두고 추가하자
+	@Override
+	public void update(Graphics g) {
+		paint(g);
 
 	}
 }
