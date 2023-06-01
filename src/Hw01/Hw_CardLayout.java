@@ -1,4 +1,4 @@
-package Hw01;
+package hw01;
 
 import java.awt.CardLayout;
 

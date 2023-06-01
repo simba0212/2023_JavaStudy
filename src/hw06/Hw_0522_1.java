@@ -1,6 +1,8 @@
-package hw01;
+package hw06;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -8,6 +10,7 @@ import java.awt.event.ItemListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -16,18 +19,28 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class Hw_calc extends JPanel implements ActionListener, ItemListener {
-	JPanel np, cp, sp;
-	JLabel jl1, jl2, jl3;
-	JTextField jtf1, jtf2;
+public class Hw_0522_1 extends JFrame implements ActionListener, ItemListener {
+	JPanel np;
+	JPanel cp;
+	JPanel sp;
+	JLabel jl1;
+	JTextField jtf1;
+	JLabel jl2;
+	JTextField jtf2;
+	JLabel jl3;
 	ButtonGroup bg;
-	JRadioButton addBtn, subBtn, mulBtn, divBtn;
+	JRadioButton addBtn;
+	JRadioButton subBtn;
+	JRadioButton mulBtn;
+	JRadioButton divBtn;
 	JTextArea jta;
-	JButton jb1, jb2, jb3,jb4;
-	Hw_CardLayout main;
-	public Hw_calc(Hw_CardLayout main) {
-		this.main = main;
-		setLayout(new BorderLayout());
+	JButton jb1;
+	JButton jb2;
+	JButton jb3;
+
+	public Hw_0522_1() {
+		super("계산기");
+
 		np = new JPanel();
 		cp = new JPanel();
 		sp = new JPanel();
@@ -73,28 +86,30 @@ public class Hw_calc extends JPanel implements ActionListener, ItemListener {
 		jb1 = new JButton("계   산");
 		jb2 = new JButton("종   료");
 		jb3 = new JButton("취   소");
-		jb4 = new JButton("뒤로가기");
 		sp.add(jb1);
 		sp.add(jb2);
 		sp.add(jb3);
-		sp.add(jb4);
 
 		add(sp, BorderLayout.SOUTH);
 
+		Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
+		setBounds(ds.width / 2 - 250, ds.height / 2 - 250, 500, 500);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// 화면부 끝
 
 		// 구현부 시작
 		jb1.addActionListener(this);
 		jb2.addActionListener(this);
 		jb3.addActionListener(this);
-		jb4.addActionListener(this);
+		
+		
 
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -112,29 +127,33 @@ public class Hw_calc extends JPanel implements ActionListener, ItemListener {
 				int num2 = Integer.parseInt(jtf2.getText());
 				int sub = num1 - num2;
 				jta.append(num1 + " - " + num2 + " = " + sub + "\n");
-			} else if (mulBtn.isSelected()) {
+			}else if (mulBtn.isSelected()) {
 				int num1 = Integer.parseInt(jtf1.getText());
 				int num2 = Integer.parseInt(jtf2.getText());
 				int mul = num1 * num2;
 				jta.append(num1 + " * " + num2 + " = " + mul + "\n");
-			} else if (divBtn.isSelected()) {
+			}else if (divBtn.isSelected()) {
 				int num1 = Integer.parseInt(jtf1.getText());
 				int num2 = Integer.parseInt(jtf2.getText());
-				double div = ((int) (num1 * 10.0 / num2)) / 10.0;
+				double div = ((int)(num1*10.0/num2))/10.0;
 				jta.append(num1 + " / " + num2 + " = " + div + "\n");
 			}
+			
 
-		} else if (obj == jb2) {
+		}
+		else if(obj == jb2) {
 			System.exit(0);
-		} else if (obj == jb3) {
+		}
+		else if(obj ==jb3) {
 			jta.setText("");
 			jtf1.setText("");
 			jtf2.setText("");
 			bg.clearSelection();
-		} else if (obj == jb4) {
-			main.cardLayout.show(main.pg1, "index");
 		}
+	}
 
+	public static void main(String[] args) {
+		new Hw_0522_1();
 	}
 
 }

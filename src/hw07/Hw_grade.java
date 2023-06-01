@@ -1,4 +1,4 @@
-package hw01;
+package hw07;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -15,22 +15,27 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-public class Hw_grade extends JPanel implements ActionListener {
-	Hw_CardLayout main;
-	JPanel jpOne, jp1, jp2, jp3;
-	JTextField jtf1, jtf2, jtf3, jtf4;
+public class Hw_grade extends JFrame implements ActionListener {
+	JPanel jpOne;
+	JPanel jp1;
+	JPanel jp2;
+	JPanel jp4;
+	JTextField jtf1;
+	JTextField jtf2;
+	JTextField jtf3;
+	JTextField jtf4;
 	JTextArea jta;
 	JScrollPane jsp;
-	JButton jb1, jb2, jb3, jb4;
+	JButton jb1;
+	JButton jb2;
+	JButton jb3;
 
-	public Hw_grade(Hw_CardLayout main) {
-		this.main = main;
-		
-		setLayout(new BorderLayout());
+	public Hw_grade() {
+		super("성적계산");
 		jpOne = new JPanel(new BorderLayout());
 		jp1 = new JPanel();
 		jp2 = new JPanel();
-		jp3 = new JPanel();
+		jp4 = new JPanel();
 
 		jtf1 = new JTextField(10);
 		jtf2 = new JTextField(10);
@@ -47,34 +52,32 @@ public class Hw_grade extends JPanel implements ActionListener {
 		jp2.add(jtf3);
 		jp2.add(new JLabel("수학 : "));
 		jp2.add(jtf4);
-
 		jpOne.add(jp2, BorderLayout.SOUTH);
 		add(jpOne, BorderLayout.NORTH);
 
 		jta = new JTextArea(30, 50);
 		jsp = new JScrollPane(jta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
 		jta.setLineWrap(true);
 		add(jsp);
 
 		jb1 = new JButton("계 산");
 		jb2 = new JButton("종 료");
-		jb3 = new JButton("취 소");
-		jb4 = new JButton("뒤로가기");
+		jb3 = new JButton("초기화");
 
-		jp3.add(jb1);
-		jp3.add(jb2);
-		jp3.add(jb3);
-		jp3.add(jb4);
-		add(jp3, BorderLayout.SOUTH);
-		// 화면구성끝
+		jp4.add(jb1);
+		jp4.add(jb2);
+		jp4.add(jb3);
 
-		// 버튼구현
+		add(jp4, BorderLayout.SOUTH);
+
+	
+		// 화면구성 끝
+
+		// 구현부
 		jb1.addActionListener(this);
 		jb2.addActionListener(this);
 		jb3.addActionListener(this);
-		jb4.addActionListener(this);
 
 	}
 
@@ -91,13 +94,6 @@ public class Hw_grade extends JPanel implements ActionListener {
 			jtf4.setText("");
 		} else if (obj == jb1) {
 			cal();
-		} else if (obj == jb4) {
-			jtf1.setText("");
-			jtf2.setText("");
-			jtf3.setText("");
-			jtf4.setText("");
-			jta.setText("");
-			main.cardLayout.show(main.pg1, "index");
 		}
 
 	}
@@ -129,4 +125,6 @@ public class Hw_grade extends JPanel implements ActionListener {
 		jta.append("학점 : " + grade + "\n");
 
 	}
+
+
 }
