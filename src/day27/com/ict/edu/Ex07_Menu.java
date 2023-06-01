@@ -2,8 +2,16 @@ package day27.com.ict.edu;
 
 import java.awt.FileDialog;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -25,6 +33,7 @@ public class Ex07_Menu extends JFrame {
 	JMenuBar jmb;
 	JMenu m_file, m_form, font_form, m_help;
 	JMenuItem i_newFile, i_openFile, i_saveFile, i_exitFile, i_item1, i_item2, i_item3, i_help, i_info;
+	String pathname;
 
 	public Ex07_Menu() {
 		super("간단메모장");
@@ -93,6 +102,13 @@ public class Ex07_Menu extends JFrame {
 					int res = JOptionPane.showOptionDialog(getParent(), "변경 내용을 저장하시겠습니까?", "간단메모장",
 							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 					if (res == 0) {
+						FileDialog fd = new FileDialog((Frame) getParent(), "저장하기", FileDialog.SAVE);
+						fd.setVisible(true);
+						pathname = fd.getDirectory() + fd.getFile();
+						if (!pathname.equals("nullnull")) {
+
+						}
+						save();
 						// 저장하는 코드
 					} else if (res == 1) {
 						jta.setText("");
@@ -125,6 +141,7 @@ public class Ex07_Menu extends JFrame {
 				String msg = fd.getDirectory() + fd.getFile();
 				System.out.println(msg);
 				// 실제로 저장하는 코드 ( I/O )
+				save();
 			}
 		});
 		i_exitFile.addActionListener(new ActionListener() {
@@ -182,6 +199,38 @@ public class Ex07_Menu extends JFrame {
 
 			}
 		});
+
+	}
+
+	public void save() {
+		String story = jta.getText().trim();
+		if (pathname.length() > 0) {
+
+			File file = new File(pathname);
+			FileWriter fw = null;
+			BufferedWriter bw = null;
+
+			try {
+				fw = new FileWriter(file);
+				bw = new BufferedWriter(fw);
+
+				bw.write(story);
+				bw.flush();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					bw.close();
+					fw.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
 
 	}
 
