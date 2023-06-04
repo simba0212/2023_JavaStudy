@@ -52,7 +52,7 @@ public class Ex03_Swing extends JFrame {
 		// 실제 프로그램 종료
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// 창크기 고정하기
-		setResizable(false);
+		setResizable(true);
 	}
 
 	public static void main(String[] args) {

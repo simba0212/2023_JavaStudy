@@ -28,7 +28,8 @@ public class Hw_main extends JFrame {
 
 	public Hw_main() {
 		super("DB 연동정보");
-		jp01 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		jp01 = new JPanel();
 		jp1 = new JPanel(new GridLayout(5,0));
 
 		t1 = new JPanel();
