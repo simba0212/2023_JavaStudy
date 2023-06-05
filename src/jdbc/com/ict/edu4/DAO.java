@@ -1,9 +1,10 @@
-package jdbc.com.ict.edu3;
+package jdbc.com.ict.edu4;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 // DAO(Data Access Object) : 데이터베이스의 data에 접근하기 위한 객체
 //                           비즈니스 로직을 분리하기 위해 사용한다.
@@ -33,31 +34,35 @@ public class DAO {
 			String password = "1111";
 			conn = DriverManager.getConnection(url, user, password);
 			return conn;
-
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		return null;
+
 	}
 
 	// DB에 접근후 원하는 메서드를 만들어서 사용
 
 	// 전체보기 메서드
-	public void getSelectAll() {
+	public ArrayList<VO> getSelectAll() {
+		ArrayList<VO> list = null;
 		try {
 			conn = getConnection();
 			String sql = "select * from 고객테이블";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			System.out.println("고객아이디\t고객이름\t나이\t등급\t직업\t적립금");
+			list = new ArrayList<>();
 			while (rs.next()) {
-				System.out.print(rs.getString(1) + "\t");
-				System.out.print(rs.getString(2) + "\t");
-				System.out.print(rs.getString(3) + "\t");
-				System.out.print(rs.getString(4) + "\t");
-				System.out.print(rs.getString(5) + "\t");
-				System.out.println(rs.getString(6));
+				VO vo = new VO();
+				vo.set고객아이디(rs.getString(1));
+				vo.set고객이름(rs.getString(2));
+				vo.set나이(rs.getString(3));
+				vo.set등급(rs.getString(4));
+				vo.set직업(rs.getString(5));
+				vo.set적립금(rs.getString(6));
+				list.add(vo);
 			}
+			return list;
+
 		} catch (Exception e) {
 		} finally {
 			try {
@@ -68,10 +73,12 @@ public class DAO {
 				// TODO: handle exception
 			}
 		}
+		return null;
 	}
 
-	public void getSelectOne(String c_id) {
+	public VO getSelectOne(String c_id) {
 		try {
+			VO vo = new VO();
 			conn = getConnection();
 			String sql = "select * from 고객테이블 where 고객아이디 = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -79,13 +86,14 @@ public class DAO {
 			rs = pstmt.executeQuery();
 			System.out.println("고객아이디\t고객이름\t나이\t등급\t직업\t적립금");
 			while (rs.next()) {
-				System.out.print(rs.getString(1) + "\t");
-				System.out.print(rs.getString(2) + "\t");
-				System.out.print(rs.getString(3) + "\t");
-				System.out.print(rs.getString(4) + "\t");
-				System.out.print(rs.getString(5) + "\t");
-				System.out.println(rs.getString(6));
+				vo.set고객아이디(c_id);
+				vo.set고객이름(rs.getString(2));
+				vo.set나이(rs.getString(3));
+				vo.set등급(rs.getString(4));
+				vo.set직업(rs.getString(5));
+				vo.set적립금(rs.getString(6));
 			}
+			return vo;
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -97,23 +105,23 @@ public class DAO {
 				// TODO: handle exception
 			}
 		}
+		return null;
 	}
 
-	public void getInsert(String c_id, String c_name, String c_age, String c_grade, String c_job, String c_point) {
+	public int getInsert(VO vo) {
 		try {
 			conn = getConnection();
 			String sql = "insert into 고객테이블 values(?,?,?,?,?,?) ";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, c_id);
-			pstmt.setString(2, c_name);
-			pstmt.setString(3, c_age);
-			pstmt.setString(4, c_grade);
-			pstmt.setString(5, c_job);
-			pstmt.setString(6, c_point);
+			pstmt.setString(1, vo.get고객아이디());
+			pstmt.setString(2, vo.get고객이름());
+			pstmt.setString(3, vo.get나이());
+			pstmt.setString(4, vo.get등급());
+			pstmt.setString(5, vo.get직업());
+			pstmt.setString(6, vo.get적립금());
 			res = pstmt.executeUpdate();
-			if (res > 0) {
-				getSelectAll();
-			}
+			return res;
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -125,9 +133,10 @@ public class DAO {
 				// TODO: handle exception
 			}
 		}
+		return 0;
 	}
 
-	public void getDelete(String c_id) {
+	public VO getDelete(String c_id) {
 		try {
 			conn = getConnection();
 			String sql = "delete from 고객테이블 where 고객아이디 = ?";
@@ -135,7 +144,8 @@ public class DAO {
 			pstmt.setString(1, c_id);
 			res = pstmt.executeUpdate();
 			if (res > 0) {
-				getSelectAll();
+				System.out.println("삭제성공");
+				return null;
 			} else {
 				System.out.println("없는 아이디 입니다.");
 			}
@@ -150,25 +160,22 @@ public class DAO {
 				// TODO: handle exception
 			}
 		}
+		return null;
 	}
 
-	public void getUpdate(String c_id, String c_name, String c_age, String c_grade, String c_job, String c_point) {
+	public int getUpdate(VO vo) {
 		try {
 			conn = getConnection();
 			String sql = "update 고객테이블 set 고객이름 = ?,나이 = ?,등급 = ?,직업 = ?,적립금 = ? where 고객아이디 = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, c_name);
-			pstmt.setString(2, c_age);
-			pstmt.setString(3, c_grade);
-			pstmt.setString(4, c_job);
-			pstmt.setString(5, c_point);
-			pstmt.setString(6, c_id);
+			pstmt.setString(1, vo.get고객이름());
+			pstmt.setString(2, vo.get나이());
+			pstmt.setString(3, vo.get등급());
+			pstmt.setString(4, vo.get직업());
+			pstmt.setString(5, vo.get적립금());
+			pstmt.setString(6, vo.get고객아이디());
 			res = pstmt.executeUpdate();
-			if (res > 0) {
-				getSelectAll();
-			} else {
-				System.out.println("없는 아이디 입니다.");
-			}
+			return res;
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -180,6 +187,7 @@ public class DAO {
 				// TODO: handle exception
 			}
 		}
+		return 0;
 	}
 
 }
