@@ -29,12 +29,13 @@ public class Ex04_ObjectOutputStream {
 		// 3. 모은 객체들을 직렬화를 한 후에 파일에 저장한다.
 		// 직렬화가 된 정보는 볼 수 없다.
 		// 읽을 때 역직렬화를 해야 볼 수 있다.
-		String pathname = "D:/khj/object02.ser";
+		String pathname = "C:\\Users\\Simba\\Desktop\\Study\\Java\\ICT\\2023_JavaStudy/test01.txt";
 		File file = new File(pathname);
 		
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		ObjectOutputStream oos = null;
+		
 		try {
 			fos = new FileOutputStream(file);
 			bos = new BufferedOutputStream(fos);

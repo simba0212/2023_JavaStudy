@@ -10,7 +10,7 @@ import java.util.ArrayList;
 // readObject() : 객체 역직렬화 메서드
 public class Ex04_ObjectInputStream {
 	public static void main(String[] args) {
-		String pathname = "D:/khj/object02.ser";
+		String pathname = "C:\\Users\\Simba\\Desktop\\Study\\Java\\ICT\\2023_JavaStudy/test01.txt";
 		ArrayList<Ex04_VO> list = new ArrayList<>();
 		File file = new File(pathname);
 
