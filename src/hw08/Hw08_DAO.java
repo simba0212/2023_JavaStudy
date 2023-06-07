@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import jdbc.com.ict.edu4.DAO;
+
 // DAO(Data Access Object) : 데이터베이스의 data에 접근하기 위한 객체
 //                           비즈니스 로직을 분리하기 위해 사용한다.
 
@@ -148,6 +150,48 @@ public class Hw08_DAO {
 			}
 		}
 		return 0;
+	}
+
+	public boolean getIdChk(String custid) {
+		boolean idchk = false;
+		try {
+			conn = getConnection();
+			String sql = "select * from customer where custid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, custid);
+			int cnt = pstmt.executeUpdate();
+			if (cnt == 0) {
+				idchk = true;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return idchk;
+	}
+
+	public void getUpdate(Hw08_VO vo) {
+		try {
+			conn = getConnection();
+			String sql = "update customer set name = ?, address = ?, phone = ? where custid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getAddress());
+			pstmt.setString(3, vo.getPhone());
+			pstmt.setString(4, vo.getCustid());
+			res = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
 	}
 
 }

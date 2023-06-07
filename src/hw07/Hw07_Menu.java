@@ -7,11 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -214,9 +216,9 @@ public class Hw07_Menu extends JFrame {
 
 			try {
 				bw = new BufferedWriter(new FileWriter(pathname));
-
 				bw.write(story);
 				bw.flush();
+
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -233,17 +235,23 @@ public class Hw07_Menu extends JFrame {
 		}
 
 	}
-	
+
 	public void open() {
-		BufferedInputStream bis = null;
+//		BufferedInputStream bis = null;
 
 		try {
-			bis = new BufferedInputStream(new FileInputStream(pathname));
-			byte[] b = bis.readAllBytes();
-			String msg = new String(b).trim();
-			jta.setText(msg);
-		}
-		catch (FileNotFoundException e) {
+			BufferedReader br = new BufferedReader(new FileReader(pathname));
+			String str = null;
+			jta.setText("");
+			while ((str = br.readLine()) != null) {
+				jta.append(str + "\n");
+			}
+
+//			bis = new BufferedInputStream(new FileInputStream(pathname));
+//			byte[] b = bis.readAllBytes();
+//			String msg = new String(b).trim();
+//			jta.setText(msg);
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -251,7 +259,6 @@ public class Hw07_Menu extends JFrame {
 			e.printStackTrace();
 		} finally {
 			try {
-				bis.close();
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}

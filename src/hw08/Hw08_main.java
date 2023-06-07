@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -25,6 +26,7 @@ public class Hw08_main extends JFrame implements ActionListener {
 	JButton jb1, jb2, jb3, jb4;
 	ArrayList<Hw08_VO> list;
 	Hw08_VO vo;
+	private JButton jb5;
 
 	public Hw08_main() {
 		super("DB 연동 정보");
@@ -49,13 +51,13 @@ public class Hw08_main extends JFrame implements ActionListener {
 		jp2.add(jtf4);
 		jp3.add(jp2);
 
-		add(jp3, BorderLayout.NORTH);
+		getContentPane().add(jp3, BorderLayout.NORTH);
 
 		jta = new JTextArea();
 		jta.setEditable(false);
 		jta.setLineWrap(true);
 		jsp = new JScrollPane(jta, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		add(jsp);
+		getContentPane().add(jsp);
 
 		jb1 = new JButton("전체보기");
 		jb2 = new JButton("삽입");
@@ -68,7 +70,7 @@ public class Hw08_main extends JFrame implements ActionListener {
 		jp4.add(jb3);
 		jp4.add(jb4);
 
-		add(jp4, BorderLayout.SOUTH);
+		getContentPane().add(jp4, BorderLayout.SOUTH);
 
 		setSize(600, 400);
 		setVisible(true);
@@ -83,91 +85,117 @@ public class Hw08_main extends JFrame implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				jta.setText("");
 				prnAll();
+				initjtf();
 			}
 		});
 		// 삽입
 		jb2.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				vo = new Hw08_VO();
 				vo.setCustid(jtf1.getText());
 				vo.setName(jtf2.getText());
 				vo.setAddress(jtf3.getText());
 				vo.setPhone(jtf4.getText());
-				int res = Hw08_DAO.getInstance().getInsert(vo);
-				if (res > 0) {
-					list = Hw08_DAO.getInstance().getSelectAll();
-					jta.setText("CUSTID\tNAME\tADDRESS\tPHONE\n");
-					jta.append("==================================================\n");
-					for (Hw08_VO k : list) {
-						jta.append(k.getCustid() + "\t");
-						jta.append(k.getName() + "\t");
-						jta.append(k.getAddress() + "\t");
-						jta.append(k.getPhone() + "\n");
-					}
 
+				boolean idchk = Hw08_DAO.getInstance().getIdChk(jtf1.getText());
+				// true면 종복id 없음
+				if (idchk) {
+					int res = Hw08_DAO.getInstance().getInsert(vo);
+					if (res > 0) {
+						list = Hw08_DAO.getInstance().getSelectAll();
+						JOptionPane.showMessageDialog(getParent(), "삽입 성공!");
+						prnAll();
+						initjtf();
+
+					} else {
+						jta.setText("삽입실패");
+					}
+					// false일때 중복id 있음
 				} else {
-					jta.setText("삽입실패");
+					JOptionPane.showMessageDialog(getParent(), "같은 custid 가 존재합니다.");
 				}
 			}
 		});
 
 		// 삭제
 		jb3.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int res = Hw08_DAO.getInstance().getDelete(jtf1.getText());
 				if (res > 0) {
-					jta.setText("삭제성공!\n");
+					JOptionPane.showMessageDialog(getParent(), "삭제성공!", null, JOptionPane.INFORMATION_MESSAGE);
 					prnAll();
-
+					initjtf();
 				} else {
-					jta.setText("없는 아이디 입니다.\n");
+					JOptionPane.showMessageDialog(getParent(), "없는 아이디입니다!", null, JOptionPane.WARNING_MESSAGE);
 					prnAll();
+					initjtf();
 				}
 			}
 		});
-
-		// 검색
+		// 검색 AND 수정하기
 		jb4.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				vo = Hw08_DAO.getInstance().getSelectOne(jtf1.getText());
-				jta.setText("CUSTID\tNAME\tADDRESS\tPHONE\n");
-				jta.append(vo.getCustid()+"\t");
-				jta.append(vo.getName()+"\t");
-				jta.append(vo.getAddress()+"\t");
-				jta.append(vo.getPhone()+"\t\n");
+				JButton obj = (JButton) (e.getSource());
+				String str = obj.getText();
+				if (str.equals("검색")) {
+					vo = Hw08_DAO.getInstance().getSelectOne(jtf1.getText());
+					if (vo == null) {
+						JOptionPane.showMessageDialog(getParent(), "없는 아이디입니다!", null, JOptionPane.WARNING_MESSAGE);
+						prnAll();
+						initjtf();
+					} else {
+						try {
+							jtf1.setText(vo.getCustid());
+							jtf2.setText(vo.getName());
+							jtf3.setText(vo.getAddress());
+							jtf4.setText(vo.getPhone());
+							jtf1.setEditable(false);
+							jb4.setText("고치기");
+						} catch (Exception e2) {
+						}
+					}
+				} else {
+					vo.setCustid(jtf1.getText());
+					vo.setName(jtf2.getText());
+					vo.setAddress(jtf3.getText());
+					vo.setPhone(jtf4.getText());
+					Hw08_DAO.getInstance().getUpdate(vo); // 업데이트 완료
+					JOptionPane.showMessageDialog(getParent(), "수정 성공~!");
+					prnAll();
+					initjtf();
+				}
 			}
 		});
 	}
-
+	public void initjtf() {
+		jtf1.setText("");
+		jtf2.setText("");
+		jtf3.setText("");
+		jtf4.setText("");
+		jtf1.setEditable(true);
+		jb4.setText("검색");
+	}
 	public void prnAll() {
 		list = Hw08_DAO.getInstance().getSelectAll(); // VO 리스트를 통해 db정보를 가져옴
-
-		jta.append("CUSTID\tNAME\tADDRESS\tPHONE\n");
-		jta.append("================================================================\n");
+		jta.setText("CUSTID\tNAME\tADDRESS\tPHONE\n");
+		jta.append("=======================================================\n");
 		for (Hw08_VO k : list) {
 			jta.append(k.getCustid() + "\t");
 			jta.append(k.getName() + "\t");
 			jta.append(k.getAddress() + "\t");
 			jta.append(k.getPhone() + "\n");
 		}
+		initjtf();
 	}
-
 	public static void main(String[] args) {
 		new Hw08_main();
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 }
