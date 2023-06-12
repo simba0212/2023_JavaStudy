@@ -1,4 +1,4 @@
-package mybatis.com.ict.edu;
+package hw10;
 
 import java.io.InputStream;
 
@@ -11,7 +11,7 @@ public class DBService {
 	// SqlSessionFactory Class를 이용해 SqlSession Class를 정의한다.
 	private static SqlSessionFactory factory;
 	// resource 는 config.xml 의 위치로 설정한다. -> 이 파일을 읽어서 실행하려고 하는것
-	static String resource = "mybatis/com/ict/edu/config.xml";
+	static String resource = "hw10/config.xml";
 	
 	// static 초기화
 	static {

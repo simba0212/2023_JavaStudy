@@ -9,30 +9,38 @@
 		<select id="" resultType="" parameterType=""></select> resultType속성이 따로 존재하지않는다. 
 		무조건 int로 반환되기때문 ==> n개의 행이 업데이트/삽입/삭제 되었습니다. 이렇게 나오니까 <update id="" parameterType=""></update> 
 		<insert id="" parameterType=""></insert> <delete id="" parameterType=""></delete> -->
-	<select id="custList" resultType="mybatis.com.ict.edu.VO">
-		select * from customer order by
-		custid
+	<select id="custList" resultType="hw10.VO">
+		select * from customer order by custid
 	</select>
 
-	<select id="custOne" parameterType="String"
-		resultType="mybatis.com.ict.edu.VO">
-		select * from customer where custid = #{custid}
+	<select id="custOne" parameterType="String" resultType="hw10.VO">
+		select *
+		from customer where custid = #{custid}
 	</select>
 
-	<insert id="custIns" parameterType="mybatis.com.ict.edu.VO">
+	<insert id="custIns" parameterType="hw10.VO">
 		insert into
 		customer(custid,name,address,phone)
-		values(customer_seq.nextval,#{name},#{address},#{phone})
+		values(#{custid},#{name},#{address},#{phone})
 	</insert>
 
-	<delete id="custDel" parameterType="mybatis.com.ict.edu.VO">
+	<delete id="custDel" parameterType="hw10.VO">
 		delete from customer where
 		custid = #{custid}
 	</delete>
 
-	<update id="custUp" parameterType="mybatis.com.ict.edu.VO">
-		update customer set name = #{name}, address = #{address},
-		phone = #{phone} where custid = #{custid}
+	<update id="custUp" parameterType="hw10.VO">
+		update customer set name =
+		#{name}, address = #{address},
+		phone =
+		#{phone} where custid =
+		#{custid}
 	</update>
+
+	<select id="idChk" parameterType="String" resultType="hw10.VO">
+		select *
+		from customer where
+		custid = #{custid}
+	</select>
 
 </mapper>
