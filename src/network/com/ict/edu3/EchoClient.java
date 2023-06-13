@@ -2,13 +2,18 @@ package network.com.ict.edu3;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class EchoClient {
 	public static void main(String[] args) throws Exception {
-		Scanner sc = new Scanner(System.in);
 		Socket s = null;
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedOutputStream bo;
 		BufferedInputStream bi;
 
@@ -18,11 +23,12 @@ public class EchoClient {
 		// 입출력 스트림
 
 		bi = new BufferedInputStream(s.getInputStream());
-
+		
 		// 메세지 전송
 		bo = new BufferedOutputStream(s.getOutputStream());
-		System.out.print("보낼 메시지를 입력하세요 : ");
-		String msg = sc.nextLine();
+		bw.write("보낼 메세지를 입력하세요 : ");
+		bw.flush();
+		String msg = br.readLine();
 		bo.write(msg.getBytes());
 		bo.flush();
 
