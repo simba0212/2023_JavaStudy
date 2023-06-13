@@ -21,7 +21,7 @@ public class Main extends JFrame implements ActionListener {
 	JTextField jtf1, jtf2, jtf3, jtf4;
 	JTextArea jta;
 	JScrollPane jsp;
-	JButton jb1, jb2, jb3, jb4;
+	JButton jb1, jb2, jb3, jb4,jb5;
 	List<VO> list;
 	VO vo;
 	int res;
@@ -61,12 +61,14 @@ public class Main extends JFrame implements ActionListener {
 		jb2 = new JButton("삽입");
 		jb3 = new JButton("삭제");
 		jb4 = new JButton("검색");
+		jb5 = new JButton("초기화");
 
 		jp4 = new JPanel();
 		jp4.add(jb1);
 		jp4.add(jb2);
 		jp4.add(jb3);
 		jp4.add(jb4);
+		jp4.add(jb5);
 
 		getContentPane().add(jp4, BorderLayout.SOUTH);
 
@@ -156,6 +158,9 @@ public class Main extends JFrame implements ActionListener {
 							jtf3.setText(vo.getAddress());
 							jtf4.setText(vo.getPhone());
 							jtf1.setEditable(false);
+							jb1.setEnabled(false);
+							jb2.setEnabled(false);
+							jb3.setEnabled(false);
 							jb4.setText("고치기");
 						} catch (Exception e2) {
 						}
@@ -173,6 +178,22 @@ public class Main extends JFrame implements ActionListener {
 				}
 			}
 		});
+		
+		
+		jb5.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				jb1.setEnabled(true);
+				jb2.setEnabled(true);
+				jb3.setEnabled(true);
+				jta.setText("");
+				initjtf();
+			}
+		});
+		
+		
 	}
 
 	public void initjtf() {
