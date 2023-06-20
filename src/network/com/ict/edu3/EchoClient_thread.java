@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class EchoClient_thread implements Runnable {
 
@@ -12,7 +13,7 @@ public class EchoClient_thread implements Runnable {
 	BufferedOutputStream bos;
 	BufferedInputStream bis;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+	Scanner sc = new Scanner(System.in);
 	public EchoClient_thread() {
 		new Thread(this).start();
 	}
@@ -22,8 +23,8 @@ public class EchoClient_thread implements Runnable {
 		while (true) {
 			try {
 				System.out.print("데이터 입력 : ");
-				String msg = br.readLine();
-				br.readLine();
+				String msg = sc.next();
+				
 
 				s = new Socket("localhost", 7778);
 

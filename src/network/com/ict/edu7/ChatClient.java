@@ -128,16 +128,16 @@ public class ChatClient extends JFrame implements Runnable {
 		JScrollPane jsp3 = new JScrollPane();
 		jsp3.setViewportView(join_list);
 		chat_east_p.add(new JLabel(" [사용자] ", JLabel.RIGHT), BorderLayout.NORTH);
-		
+
 		exitR_bt = new JButton("방 나가기");
-		chat_east_p.add(exitR_bt,BorderLayout.SOUTH);
+		chat_east_p.add(exitR_bt, BorderLayout.SOUTH);
 		chat_east_p.add(jsp3, BorderLayout.CENTER);
 
 		chat_p.add(chat_east_p, BorderLayout.EAST);
 
 		// 센터
 		JPanel chat_center_p = new JPanel(new BorderLayout());
-		
+
 		chat_center_p.add(new JLabel("[채팅 기록]", JLabel.LEFT), BorderLayout.NORTH);
 		jta = new JTextArea();
 		jta.setLineWrap(true);
@@ -151,15 +151,13 @@ public class ChatClient extends JFrame implements Runnable {
 
 		msg_tf = new JTextField();
 		send_bt = new JButton("보내기");
-		
 
-		center_south.add(msg_tf,BorderLayout.CENTER);
+		center_south.add(msg_tf, BorderLayout.CENTER);
 		center_south.add(send_bt, BorderLayout.EAST);
-		
-		
+
 		chat_center_p.add(center_south, BorderLayout.SOUTH);
 		chat_p.add(chat_center_p);
-		
+
 		cardLayout.show(pg, "login");
 		add(pg); // 프레임 설정
 		setSize(450, 550);
@@ -308,11 +306,11 @@ public class ChatClient extends JFrame implements Runnable {
 			}
 		});
 		msg_tf.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sendMessage();
-				
+
 			}
 		});
 
@@ -326,13 +324,13 @@ public class ChatClient extends JFrame implements Runnable {
 					Protocol p = new Protocol();
 					p.setCmd(5);
 					out.writeObject(p);
-					
-					cardLayout.show(pg,"wait");
-					
+
+					cardLayout.show(pg, "wait");
+
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
-				
+
 			}
 		});
 	}
@@ -340,7 +338,7 @@ public class ChatClient extends JFrame implements Runnable {
 	private void sendMessage() {
 		try {
 			String msg = msg_tf.getText().trim();
-			if(msg.length()>0) {
+			if (msg.length() > 0) {
 				Protocol p = new Protocol();
 				p.setCmd(1);
 				p.setMsg(msg);
@@ -392,10 +390,10 @@ public class ChatClient extends JFrame implements Runnable {
 
 						break esc;
 					case 1: // 메세지 전달
-						jta.append(p.getMsg()+"\n");
+						jta.append(p.getMsg() + "\n");
 						jta.setCaretPosition(jta.getText().length());
 //						join_list.setListData(p.getNames());
-						
+
 						break;
 					case 2: // 접속 및 갱신 --> 누가 접속을 했다? 입장하기 버튼을 눌렀다? cmd로 2를 보냈을거고, 여기로 떨어진다.
 						// 유저목록가져오기
@@ -408,6 +406,10 @@ public class ChatClient extends JFrame implements Runnable {
 					case 4: // 방 참여
 						join_list.setListData(p.getNames());
 						jta.append(p.getMsg() + "\n");
+						break;
+						
+					case 5: // 대화방 참여자 목록
+						join_list.setListData(p.getNames()); // 프로토콜에 저장되어 있는 방에 참여한 사람들 목록
 						break;
 
 					case 6: // 쪽지 보내기
