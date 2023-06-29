@@ -147,7 +147,7 @@ public class DB_Client extends JFrame implements Runnable {
 	// 접속
 	public void connected() {
 		try {
-			s = new Socket("192.168.0.41", 7780);
+			s = new Socket("localhost", 7780);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
 			new Thread(this).start();
@@ -156,7 +156,7 @@ public class DB_Client extends JFrame implements Runnable {
 		}
 	}
 
-	// 끝내기
+	// 끝내기n
 	public void closed() {
 		try {
 			out.close();
